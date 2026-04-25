@@ -25,6 +25,10 @@ app.get("/about", (req, res) => {
   res.sendFile(absPath + "/about.html");
 });
 
+app.use((req, res) => {
+  res.status(400).sendFile(absPath + "/404.html");
+});
+
 app.listen(port, () => {
   console.log(`server started`);
 });
