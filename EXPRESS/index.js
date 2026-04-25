@@ -1,16 +1,28 @@
 import express from "express";
-import { home } from "./pages/home.js";
-import { about } from "./pages/about.js";
+import path from "path";
 
 const app = express();
 const port = 3000;
+const absPath = path.resolve("view");
 
 app.get("/", (req, res) => {
-  res.send(home());
+  res.sendFile(absPath + "/home.html");
+});
+
+app.post("/submit", (req, res) => {
+  let body = "";
+  req.on("data", (chunks) => {
+    body += chunks.toString();
+  });
+
+  req.on("end", () => {
+    console.log(body);
+    res.end(body);
+  });
 });
 
 app.get("/about", (req, res) => {
-  res.send(about());
+  res.sendFile(absPath + "/about.html");
 });
 
 app.listen(port, () => {
