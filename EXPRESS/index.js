@@ -3,30 +3,16 @@ import path from "path";
 
 const app = express();
 const port = 3000;
-const absPath = path.resolve("view");
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-  res.sendFile(absPath + "/home.html");
+  res.render("login");
 });
 
 app.post("/submit", (req, res) => {
-  let body = "";
-  req.on("data", (chunks) => {
-    body += chunks.toString();
-  });
-
-  req.on("end", () => {
-    console.log(body);
-    res.end(body);
-  });
-});
-
-app.get("/about", (req, res) => {
-  res.sendFile(absPath + "/about.html");
-});
-
-app.use((req, res) => {
-  res.status(400).sendFile(absPath + "/404.html");
+  console.log(req.body);
+  res.render("submitted", req.body);
 });
 
 app.listen(port, () => {
